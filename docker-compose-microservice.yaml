@@ -1,8 +1,8 @@
 version: '3.2'
 services:
   microservice-collector-manufacturers:
-    image: manufacturers/node:1.0
-    container_name: microservice-collector-date-reference
+    image:  microservice-manufacturer/node:1.0
+    container_name: microservice-collector-manufacturer
     environment:
       - SQS_URL_DATE=http://localstack:4566/000000000000/data-reference-queue
       - SQS_URL_MANUFACTURERS=http://localstack:4566/000000000000/manufacturers-queue
@@ -12,7 +12,7 @@ services:
       - REGION=us-east-1
       - PORT=5000
     ports:
-      - 5000:5000
+      - 5050:5050
     restart: unless-stopped
 networks:
   default:

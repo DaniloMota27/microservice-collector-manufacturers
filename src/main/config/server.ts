@@ -16,6 +16,7 @@ mongoHelper.connect(env.mongoUrl).then(async () => {
         },
 
     });
+    console.log(`Start app - ${ new Date()}`)
     await sqsHelper.consumerConnect()
 
 

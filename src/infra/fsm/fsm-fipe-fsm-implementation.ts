@@ -55,7 +55,7 @@ export class FipeFSM implements IFsmTransition {
             }
             if (action.type === 'parseManufacturer') {
                 const arr = []
-                const parsedManufacturers = this.parseObject.execute<Array<Manufacturer>>(context.manufacturer.manufacturers)
+                const parsedManufacturers = await this.parseObject.execute<Array<Manufacturer>>(context.manufacturer.manufacturers)
                 for (let objectParsed of parsedManufacturers) {
                     arr.push({
                         dateId: context.manufacturer.dateId,

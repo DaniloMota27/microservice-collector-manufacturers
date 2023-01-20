@@ -10,7 +10,7 @@ type TypeOfSut = {
 
 
 class ParseObjectStub implements  IParseObjectDl {
-    convertToDomain<T>(payload: T): T {
+    async convertToDomain<T>(payload: T): Promise<T> {
         const object: Manufacturer = {manufacturerId: 9, manufacturerName: "Buggy"}
         return  [object]as T
     }
@@ -24,13 +24,13 @@ const makeSut = () : TypeOfSut => {
 }
 
 describe('ParseObjectImplementationDl', () => {
-    test("Should return any object if call funcation", () => {
+    test("Should return any object if call funcation", async () => {
         const {sut} = makeSut()
         const payload : FipeManufacturerDto = {
          Label: 'Buggy', Value: '9'
         }
         const object: Manufacturer = {manufacturerId: 9, manufacturerName: "Buggy"}
-        const response = sut.execute<FipeManufacturerDto>(payload)
+        const response = await sut.execute<FipeManufacturerDto>(payload)
         expect(response).toEqual([object])
 
     })

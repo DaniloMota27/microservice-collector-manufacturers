@@ -38,7 +38,7 @@ class CheckDataOnWebSiteStub implements ICheckDataOnWebsiteUseCase {
 
 }
 class ParseObjectStub implements IParseObjectUseCase {
-    execute<T>(payload: T): T {
+    async execute<T>(payload: T): Promise<T> {
         return true as T;
     }
 

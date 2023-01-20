@@ -1,7 +1,7 @@
 import {IParseObjectDl} from "../../data/protocols/manufacturers/i-parse-object-dl";
 
 export class ParseImplementationInfra implements IParseObjectDl {
-    convertToDomain<T>(payload: T): T {
+    async convertToDomain<T>(payload: T): Promise<T> {
         const arr: Array<any> = []
         const parsedObject = payload as any
         if(Array.isArray(payload)) {
@@ -11,7 +11,7 @@ export class ParseImplementationInfra implements IParseObjectDl {
             return arr as T
         }
         arr.push({ manufacturerId: parseInt(parsedObject.Value), manufacturerName: parsedObject.Label})
-        return arr as T
+        return Promise.resolve(arr as T)
     }
 
 }

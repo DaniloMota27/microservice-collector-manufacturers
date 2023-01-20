@@ -8,9 +8,9 @@ export class ParseObjectImplementationDl implements IParseObjectUseCase{
         this.parseObject = parseObject
     }
 
-  execute<T>(payload: T ): T {
+  async execute<T>(payload: T ): Promise<T> {
 
-        return this.parseObject.convertToDomain<T>(payload)
+        return await this.parseObject.convertToDomain<T>(payload)
     }
 
 }

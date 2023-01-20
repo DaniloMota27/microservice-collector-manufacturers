@@ -8,7 +8,7 @@
   "homepage": "git@github.com:DaniloMota27/microservice-collector.git",
   "scripts": {
     "start:dev": "sucrase-node src/main/config/server.ts",
-    "docker:build": "docker build -t date-reference/node:1.0 .",
+    "docker:build": "docker build -t microservice-manufacturer/node:1.0 .",
     "docker:startApp": "docker run -d  -p 5000:5000 --env MONGO_URL='mongodb://mongodb:27017/vehicles' --env SQS_URL='http://localhost:4566/000000000000/data-reference-queue' --name microservice-controller-date-reference --network network-microservice date-reference/node:1.0",
     "create:NetworkMongodb": "docker network create network-microservice",
     "create:LocalStack": "docker-compose up -d",
