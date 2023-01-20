@@ -1,0 +1,18 @@
+title Fluxo Microservice Fipe
+
+fipe<->collector-date-reference: busca as informações a fipe devolve [{ \n"Codigo": 293, \n"Mes": "janeiro/2023 " \n},]
+collector-date-reference->collector-date-reference-topic:publica as infomações no tópico \n{ dateId:number,\n  status:bolean\n  description: string}
+collector-manufacturer->collector-date-reference-topic:le os objectos de data
+collector-manufacturer<->fipe:busca as informações a fipe devolve \n[{"Label": "Acura"\n,"Value": "1"},]
+collector-manufacturer->collector-manufacturer-topic:publica as informações \n{ dateId:number,\n  status:bolean\n  description: string\n  manufacturerId:number, \n manufacturerName:string}
+collector-models->collector-manufacturer-topic:le os objectos de manufacturer
+collector-models<->fipe:Busca informações sobre os models\n[ \n{\n"Modelos": [ {"Label": "Integra GS 1.8","Value": 1}}],\n"Anos": [{"Label": "1995 Gasolina","Value": "1995-1"}]\n}]
+collector-models->collector-models-topic: publica no topico \n{ dateId:number,\n  status:bolean\n  description: string\n  manufacturerId:number, \n  manufacturerName:string \n  modelId: number \n  modelLabel: string}
+collector-years->collector-models-topic:le os objectos de models
+collector-years<->fipe: busca as informações sobre yearsofModels
+collector-years->collector-years-topic: publica as informações sobre years \n{ dateId:number,\n  status:bolean\n  description: string\n  manufacturerId:number, \n  manufacturerName:string \n  modelId: number \n  modelLabel: string, \n  yearId: number, \n  yearDescription: string}
+collector-report->collector-years-topic:le o objecto no tópico de years
+collector-report<->fipe:buca as informações sobre os valores
+collector-report->collector-report-topic:publicar as informações consolidadas \n{ dateId:number,\n  status:bolean\n  description: string\n  manufacturerId:number, \n  manufacturerName:string \n  modelId: number \n  modelLabel: string, \n  yearId: number, \n  yearDescription: string \n  price: number}
+create-report->collector-report-topic:coleta as informações no topico
+create-report->mongoDb: perssiste as informações no mongoDb
