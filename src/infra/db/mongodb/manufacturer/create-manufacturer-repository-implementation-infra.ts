@@ -6,19 +6,6 @@ export class CreateManufacturerRepositoryImplementationInfra implements ICreateM
     async createManufacturer<T>(payload: T): Promise<T> {
         const castObject = payload as any
         const manufacturerCollection = mongoHelper.getCollection('manufacturers')
-        if (Array.isArray(castObject)) {
-            const checkArray = []
-            for (let manufacturer of castObject) {
-                const query = {dateId: manufacturer.dateId, manufacturerId: manufacturer.manufacturerId};
-                const update = {$set: castObject};
-                const options = {upsert: true};
-                const idObject = (await manufacturerCollection.updateOne(query, update, options))
-                checkArray.push(idObject !== null)
-            }
-            let checker = checkArray => checkArray.every(v => v === true);
-            return checker as T
-
-        }
         const query = {dateId: castObject.dateId, manufacturerId: castObject.manufacturerId};
         const update = {$set: castObject};
         const options = {upsert: true};

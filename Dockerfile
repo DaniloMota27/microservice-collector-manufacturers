@@ -3,5 +3,4 @@ USER node
 WORKDIR /app
 COPY --chown=node . .
 RUN yarn install && yarn cache clean && yarn tsc
-CMD ["yarn", "start:dev"]
-EXPOSE 5000
+CMD ["yarn", "start:prod"]

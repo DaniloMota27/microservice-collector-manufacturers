@@ -6,7 +6,6 @@ export class CheckManufacturerImplementationInfra implements ICheckDataOnWebSite
     async getDataOnWebSite<T>(payload: T): Promise<T> {
         ConfigFetch.getManufacturer.configRequest.body = payload
         const result = await fetch(ConfigFetch.getManufacturer.url, ConfigFetch.getManufacturer.configRequest)
-
         return Promise.resolve({statusCode: 200, message: await result.json()} as T);
     }
 

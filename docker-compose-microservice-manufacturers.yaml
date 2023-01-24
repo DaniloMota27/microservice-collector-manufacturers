@@ -2,17 +2,17 @@ version: '3.2'
 services:
   microservice-collector-manufacturers:
     image:  microservice-manufacturer/node:1.0
-    container_name: microservice-collector-manufacturer
+    deploy:
+      mode: replicated
+      replicas: 10
     environment:
       - SQS_URL_DATE=http://localstack:4566/000000000000/data-reference-queue
       - SQS_URL_MANUFACTURERS=http://localstack:4566/000000000000/manufacturers-queue
       - AWS_ACCESS_KEY_ID=123
       - AWS_SECRET_KEY=123
+      - AWS_ENDPOINT=http://localstack:4566/
       - MONGO_URL=mongodb://mongodb:27017/vehicles
       - REGION=us-east-1
-      - PORT=5000
-    ports:
-      - 5050:5050
     restart: unless-stopped
 networks:
   default:

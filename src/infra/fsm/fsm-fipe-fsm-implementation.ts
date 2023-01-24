@@ -11,6 +11,7 @@ import {ICreateManufacturerUseCase} from "../../domain/usecases/manufacturers/i-
 import {
     ISendMessageManufacturerToQueueUseCase
 } from "../../domain/usecases/manufacturers/i-send-message-manufacturer-to-queue-use-case";
+import {Logger} from "tslog";
 
 
 export class FipeFSM implements IFsmTransition {
@@ -32,17 +33,21 @@ export class FipeFSM implements IFsmTransition {
     }
 
     async transition(state: StateOfMachine, event: EventOfMachine, context: any): Promise<any> {
+        const logger = new Logger({hideLogPositionForProduction: true})
         const nextStateNode = fipeFsm.states[state.status].on?.[event.type] ?? {target: state.status};
         const nextState = {
             ...state,
             status: nextStateNode.target.status,
         };
         if (event.type === "FINAL") {
+            logger.info(`stopped: state machine - ${new Date()}`)
+
             return context
         }
-        for (const action of nextStateNode.actions) {
-            console.log(`Starting ${action.type} - ${ new Date()}`)
+        for (let action of nextStateNode.actions) {
+            logger.info(`Starting ${action.type} - ${new Date()}`)
             if (action.type === 'getManufacturer') {
+
                 const {dateId, month, checkStatus} = JSON.parse(context.date.Body)
                 const payload: FipeDto = {codigoTabelaReferencia: dateId, codigoTipoVeiculo: TypeOfVehicle.CAR}
                 const arrayManufacturer = await this.checkDataOnWebSite.execute<any>(JSON.stringify(payload))
@@ -72,11 +77,13 @@ export class FipeFSM implements IFsmTransition {
             if (action.type === 'createManufacturer') {
                 for (let manufacturer of context.manufacturer) {
                     await this.createManufacturer.execute<any>(manufacturer)
+                    logger.info(`Create manufacturer on db - dateReference: ${manufacturer.dateId} manufacturerId: ${manufacturer.manufacturerId} manufacturerName: ${manufacturer.manufacturerName}`)
                 }
             }
             if (action.type === 'sendToQueue') {
-                for(let manufacturer of context.manufacturer){
+                for (let manufacturer of context.manufacturer) {
                     await this.sendManufacturer.execute<any>(manufacturer)
+                    logger.info(`Send message to queue - dateReference: ${manufacturer.dateId} manufacturerId: ${manufacturer.manufacturerId} manufacturerName: ${manufacturer.manufacturerName}`)
                 }
 
 

@@ -11,17 +11,17 @@ const makeSut = (): TypeOfSut => {
     return {sut}
 }
 
-describe('ParseImplementationInfra', () => {
-    test('Should return array parsed with called passed array object', () => {
+describe('ParseImplementationInfra', ()  => {
+    test('Should return array parsed with called passed array object', async () => {
         const {sut} = makeSut()
         const payloadMock: Array<FipeManufacturerDto> =  [{ Label: 'Porsche', Value: '47' }]
-        const response = sut.convertToDomain(payloadMock)
+        const response = await sut.convertToDomain(payloadMock)
         expect(response).toEqual([{ manufacturerId: 47, manufacturerName: 'Porsche' }])
     })
-    test('Should return array parsed with called passed object', () => {
+    test('Should return array parsed with called passed object', async () => {
         const {sut} = makeSut()
         const payloadMock: FipeManufacturerDto =  { Label: 'Porsche', Value: '47' }
-        const response = sut.convertToDomain(payloadMock)
+        const response = await sut.convertToDomain(payloadMock)
         expect(response).toEqual([{ manufacturerId: 47, manufacturerName: 'Porsche' }])
     })
 })
