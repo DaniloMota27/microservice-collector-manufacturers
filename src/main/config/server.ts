@@ -1,3 +1,4 @@
+import 'module-alias/register'
 import env from '../config/env'
 import {mongoHelper} from "../../infra/db/helpers/mongodb/mongo-helper";
 import AWS from "aws-sdk";
